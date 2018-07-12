@@ -27,6 +27,7 @@ module.exports.routes = {
   '/': {
     view: 'pages/homepage'
   },
+  'post /bulk':'UrlShortController.bulk',
 
   /***************************************************************************
   *                                                                          *
