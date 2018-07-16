@@ -7,12 +7,59 @@
 
 module.exports = {
 
-  attributes: {
-    id: { type: 'number', columnName: '_id', autoIncrement: true }, 
-    url: { type: 'string' },
-    hash: { type: 'string', allowNull: true }
-  },
-  dontUseObjectIds: true
+    attributes: {
+        sec: { type: 'number' }, 
+        url: { type: 'string' },
+        hash: { type: 'string', allowNull: true }
+    },
+    dontUseObjectIds: true,
+    beforeCreate: function (valuesToSet, proceed) {
+        console.log("entro aqui");
+        var db = Counter.getDatastore().manager;
+        console.log('db----------------->');
+        for (var prop in db) {
+                // skip loop if the property is from prototype
+
+                // your code
+                console.log(prop);
+        }
+        var rawMongoCollection = db.collection(Counter.tableName);
+        var sequenceDocument = rawMongoCollection.findOneAndUpdate(
+            {code: 'UrlShortSequence' },
+            {$inc:{sequence:1}}, 
+            {
+                returnOriginal: false
+            }).then(function(sequenceUpdated){
+                var sequenceNextVal = sequenceUpdated.value.sequence;
+                valuesToSet.sec = sequenceNextVal;
+                return proceed();
+            }).catch(function(e){
+                console.log(e);
+                valuesToSet.sec = null;
+                return proceed();
+            });
+        /*
+        var sequenceDocument = rawMongoCollection.findAndModify(
+            {
+            query: {code: 'UrlShortSequence' },
+            update: {$inc:{sequence:1}},
+            new:true});*/
+        /*
+        Counter.update({ code: 'UrlShortSequence' }).set({$inc:{sequence:1}}).fetch()
+            .then(function(counterSequence){
+                console.log('A---------->');
+                console.log(counterSequence[0]);
+                var sequenceNextVal = counterSequence[0].sequence;
+                console.log(sequenceNextVal);
+                console.log(valuesToSet);
+                valuesToSet.sec = sequenceNextVal;
+                return proceed();
+
+            }).catch(function(e){
+                console.log(e);
+            });
+        */
+    }
   /*afterCreate: function (newObj, next) {
         Model.update({ id: newObj.id }, { code: newObj.id }, next);
     }*/
