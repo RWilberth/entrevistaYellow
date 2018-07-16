@@ -16,6 +16,30 @@ module.exports = {
   	});
   	return result;
   },
+  redirectUrl: function(req, res){
+    var params = req.params;
+    var hashToken = params.hashToken;
+    if(!emptyValidation.isValid(hashToken)){
+      return res.json({message: "Token value is required for this endpoint"});
+    }
+    var hashNumber = hashGenerator.convertBase62ToBase10(params.hashToken);
+    console.log(hashNumber);
+
+    UrlShort.find({hash: hashNumber}).then(function(urls){
+      console.log(urls);
+    });
+    UrlShort.findOne({hash: hashNumber}).then(function(urlShort){
+      console.log(urlShort);
+      if(!urlShort){
+        return res.notFound('Could not your url, sorry.');
+      }else{
+        return res.redirect(urlShort.url);
+      }
+    }).catch(function(e){
+      console.log(e);
+      return res.json({message: e});
+    })
+  },
   bulk: function(req, res){
 
    
@@ -35,14 +59,14 @@ module.exports = {
         .exec(function(err, counter, wasCreated){
             if (err) { 
                 console.log(err);
-                return proceed(); 
+                return res.json({message: err});
             }
             var urls = req.body.map(function(url){
               return {url:url};
             });
           UrlShort.createEach(urls).fetch().then(function(urlsCreated){
             var hashCreated = urlsCreated.map(function(url){
-              var numToHash = (url.sec.toString() + url.createdAt.toString());
+              var numToHash = url.hash.toString();
               var hash = hashGenerator.convertBase10ToBase62(parseInt(numToHash));
               return {hash: hash, url: url.url};
             });

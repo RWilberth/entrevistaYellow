@@ -10,19 +10,10 @@ module.exports = {
     attributes: {
         sec: { type: 'number' }, 
         url: { type: 'string' },
-        hash: { type: 'string', allowNull: true }
+        hash: { type: 'number', allowNull: true }
     },
-    dontUseObjectIds: true,
     beforeCreate: function (valuesToSet, proceed) {
-        console.log("entro aqui");
         var db = Counter.getDatastore().manager;
-        console.log('db----------------->');
-        for (var prop in db) {
-                // skip loop if the property is from prototype
-
-                // your code
-                console.log(prop);
-        }
         var rawMongoCollection = db.collection(Counter.tableName);
         var sequenceDocument = rawMongoCollection.findOneAndUpdate(
             {code: 'UrlShortSequence' },
@@ -32,6 +23,8 @@ module.exports = {
             }).then(function(sequenceUpdated){
                 var sequenceNextVal = sequenceUpdated.value.sequence;
                 valuesToSet.sec = sequenceNextVal;
+                var hashStr = sequenceNextVal.toString() + valuesToSet.createdAt.toString();
+                valuesToSet.hash = parseInt(hashStr);
                 return proceed();
             }).catch(function(e){
                 console.log(e);
