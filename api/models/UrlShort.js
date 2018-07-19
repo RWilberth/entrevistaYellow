@@ -5,6 +5,7 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+var constants = require('../../shared/Constants.js');
 module.exports = {
 
     attributes: {
@@ -16,7 +17,7 @@ module.exports = {
         var db = Counter.getDatastore().manager;
         var rawMongoCollection = db.collection(Counter.tableName);
         var sequenceDocument = rawMongoCollection.findOneAndUpdate(
-            {code: 'UrlShortSequence' },
+            {code: constants.URLSHORT_SEQUENCE },
             {$inc:{sequence:1}}, 
             {
                 returnOriginal: false

@@ -8,6 +8,8 @@
 var emptyValidation = require('../../validations/EmptyValidator.js');
 var urlValidation = require('../../validations/UrlValidator.js');
 var hashGenerator = require('../../components/hashGenerator.js');
+
+var constants = require('../../shared/Constants.js');
 module.exports = {
 	validateUrls: function (array) {
 		var result = !array.some(function (element) {
@@ -61,9 +63,9 @@ module.exports = {
 			});
 		}
 		Counter.findOrCreate({
-			code: 'UrlShortSequence'
+			code: constants.URLSHORT_SEQUENCE
 		}, {
-			code: 'UrlShortSequence',
+			code: constants.URLSHORT_SEQUENCE,
 			sequence: 0
 		})
 		.exec(function (err, counter, wasCreated) {
