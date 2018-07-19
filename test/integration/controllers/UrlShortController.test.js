@@ -50,7 +50,7 @@ describe('UrlShortController.bulk', function () {
 		});
 	});
 	var massiveUrls = [];
-	var amountElements = 5000;
+	var amountElements = 2000;
 	for(var i = 0; i < amountElements; i++){
 		massiveUrls.push('https://sailsjs.com/documentation/concepts/testing');
 	}

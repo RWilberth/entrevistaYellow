@@ -24,7 +24,7 @@ module.exports = {
 				message: "Token value is required for this endpoint"
 			});
 		}
-		var hashNumber = hashGenerator.convertBase62ToBase10(params.hashToken);
+		var hashNumber = hashGenerator.convertBase62ToBase10(hashToken);
 		
 		UrlShort.findOne({
 			hash: hashNumber
