@@ -10,6 +10,10 @@ Instalar mocha (en caso de que se requiera correr las pruebas automatizada) **np
 
 Instalar [postman](https://www.getpostman.com/docs/v6/postman/launching_postman/installation_and_updates) o similar.
 
+# Instalacion
+
+Ingresa a la carpeta del proyecto mediante la linea de comandos y ejecuta el comando **npm install** 
+
 # Ejecutar la aplicacion.
 
 1. Abrir la linea de comandos ejecuar el comando mongodb.
