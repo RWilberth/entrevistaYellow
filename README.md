@@ -1,27 +1,77 @@
-# app
+# Requerimientos de instalación
 
-a [Sails v1](https://sailsjs.com) application
++ Instalar node js [Instalar](https://nodejs.org/en/download/)
+
++ Instalar MongoDB [Instalar](https://www.mongodb.com/download-center?jmp=tutorials#community)
+
++ Instalar sails **npm install sails -g**
+
+Instalar mocha (en caso de que se requiera correr las pruebas automatizada) **npm install mocha -g**
+
+Instalar [postman](https://www.getpostman.com/docs/v6/postman/launching_postman/installation_and_updates) o similar.
+
+# Ejecutar la aplicacion.
+
+1. Abrir la linea de comandos ejecuar el comando mongodb.
+
+2. Abrir una segunda linea de comandos ejecutar el comando sails lift
+
+3. Abre el postman(o similar) para poder ejecutar cualquiera de los siguientes endpoints:
+a. http://localhost:1337/:hash
+b. http://localhost:1337/url/bulk
+
+# Descripción de los endpoints
+
+**a. /:hash**
+## Descripción
+Redirecciona a la url previamente insertada en el metodo b
+## Peticion 
+### Formato
+/:hash
+### Ejemplo
+/hfwAmZhvqi
+## Respuesta
+Redireccionamiento a la url indicada
 
 
-### Links
+**b. /url/bulk**
 
-+ [Get started](https://sailsjs.com/get-started)
-+ [Sails framework documentation](https://sailsjs.com/documentation)
-+ [Version notes / upgrading](https://sailsjs.com/documentation/upgrading)
-+ [Deployment tips](https://sailsjs.com/documentation/concepts/deployment)
-+ [Community support options](https://sailsjs.com/support)
-+ [Professional / enterprise options](https://sailsjs.com/enterprise)
+## Descripción
+Registra un conjunto de urls y retorna el conjunto de urls con sus respectivas claves para consultar
+## Peticion
+### Formato
+[url, url, url]
+### Ejemplo
 
+```json
+[
+	"https://www.google.com/",
+	"https://www.google.com/", 
+	"https://sailsjs.com/docs/concepts/actions"
+]
+```
 
-### Version info
+## Respuesta
 
-This app was originally generated on Wed Jul 11 2018 21:32:00 GMT-0500 (Hora de verano central (México)) using Sails v1.0.2.
+### Formato
+[{hash:string, url: string}, ...]
+### Ejemplo 
+```json
+[
+    {
+        "hash": "hfwAmZhvqi",
+        "url": "https://www.google.com/"
+    },
+    {
+        "hash": "hfz0q1SpgM",
+        "url": "https://www.google.com/"
+    },
+    {
+        "hash": "hftKj7x224",
+        "url": "https://sailsjs.com/docs/concepts/actions"
+    }
+]
+```
 
-<!-- Internally, Sails used [`sails-generate@1.15.28`](https://github.com/balderdashy/sails-generate/tree/v1.15.28/lib/core-generators/new). -->
-
-
-
-<!--
-Note:  Generators are usually run using the globally-installed `sails` CLI (command-line interface).  This CLI version is _environment-specific_ rather than app-specific, thus over time, as a project's dependencies are upgraded or the project is worked on by different developers on different computers using different versions of Node.js, the Sails dependency in its package.json file may differ from the globally-installed Sails CLI release it was originally generated with.  (Be sure to always check out the relevant [upgrading guides](https://sailsjs.com/upgrading) before upgrading the version of Sails used by your app.  If you're stuck, [get help here](https://sailsjs.com/support).)
--->
-
+# Testing
+Para ejecutrar las pruebas previamente programadas ejecute el comando **mocha test/lifecycle.test.js test/integration/\*\*/*.test.js**
